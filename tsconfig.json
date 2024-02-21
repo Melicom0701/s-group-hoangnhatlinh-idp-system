@@ -17,5 +17,9 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false
-  }
+  },
+  "include": [
+    "./src/**/*.ts",
+    "./src/users/user.modules.ts" // Add the missing file here
+  ]
 }
