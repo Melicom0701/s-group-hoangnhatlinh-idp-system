@@ -11,10 +11,10 @@ export class Permission {
   @Column()
   description: string;
 
-  @Column()
+  @Column({ nullable: true })
   createdAt: Date;
 
-  @Column()
+  @Column({ nullable: true })
   updatedAt: Date;
 
   @Column({ nullable: true })

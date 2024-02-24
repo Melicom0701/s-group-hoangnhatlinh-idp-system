@@ -1,7 +1,6 @@
 // src/users/dto/create-user.dto.ts
 
-import { IsNotEmpty, IsString, IsOptional, IsDate } from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateUserDto {
   @IsNotEmpty()
@@ -16,18 +15,7 @@ export class CreateUserDto {
   @IsString()
   fullName: string;
 
-  @IsOptional()
-  @Type(() => Date)
-  @IsDate()
-  createdAt?: Date;
-
-  @IsOptional()
-  @Type(() => Date)
-  @IsDate()
-  updatedAt?: Date;
-
-  @IsOptional()
-  @Type(() => Date)
-  @IsDate()
-  deletedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date;
 }
