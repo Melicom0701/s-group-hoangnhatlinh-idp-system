@@ -1,10 +1,13 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import * as jwt from 'jsonwebtoken';
+// import { decode } from 'punycode';
+
 // import * as Redis from 'ioredis';
 // const redisClient = new Redis();
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
+  constructor() {}
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
@@ -17,6 +20,7 @@ export class JwtAuthGuard implements CanActivate {
     try {
       const decodedToken = jwt.verify(token, 'huhuhuhu');
       request.user = decodedToken;
+
       return true;
     } catch (error) {
       return false;

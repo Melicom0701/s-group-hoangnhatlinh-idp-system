@@ -4,14 +4,12 @@ import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { UsersModule } from 'src/users/users.module';
 import { RedisModule } from 'src/redis/redis.module';
-import { LoginInfModule } from 'src/loginInf/loginInf.module';
 
 const jwtConstants = {
   secret: 'huhuhuhu',
 };
 @Module({
   imports: [
-    LoginInfModule,
     RedisModule,
     UsersModule,
     JwtModule.register({

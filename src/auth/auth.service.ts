@@ -5,7 +5,6 @@ import { UsersService } from '../users/users.service';
 // import { User } from '../users/user.entity';
 import { LoginUserDto } from './dto/login-user.dto';
 import { RedisClientType } from 'redis';
-import { LoginInfService } from '../loginInf/loginInf.service';
 @Injectable()
 export class AuthService {
   constructor(
@@ -19,18 +18,21 @@ export class AuthService {
     if (!user) {
       return null;
     }
-    //key version take parameter from date time to generate
-    const keyVersion: string = new Date().getTime().toString();
+    const time = new Date().getTime();
+    const loginInf = {
+      id: time.toString(),
+      loginTime: time,
+      logoutTime: null,
+      role: '...',
+    };
     const payload = {
       username: user.username,
       sub: user.id,
-      keyVersion: keyVersion,
+      loginInfId: loginInf.id,
     };
     try {
       const accessToken = this.jwtService.sign(payload);
-      const loginInfService = new LoginInfService(); // Create an instance of LoginInfService
-      const loginInf = await loginInfService.create(keyVersion); // Call the create method on the instance
-      console.log(loginInf);
+      this.redisClient.set(String(user.id), JSON.stringify(loginInf));
       return {
         accessToken,
       };
@@ -39,7 +41,3 @@ export class AuthService {
     }
   }
 }
-
-//   async validateUser(payload: JwtPayload): Promise<User> {
-//    // return await this.usersService.findByPayload(payload);
-//   }
