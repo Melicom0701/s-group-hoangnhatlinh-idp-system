@@ -26,4 +26,15 @@ export class UsersService {
   async findAll(): Promise<User[]> {
     return this.usersRepository.find();
   }
+  async Login({
+    username,
+    password,
+  }: {
+    username: string;
+    password: string;
+  }): Promise<User> {
+    return await this.usersRepository.findOne({
+      where: { username, password },
+    });
+  }
 }

@@ -1,11 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
-import * as bcrypt from 'bcrypt';
-import { User } from '../users/user.entity';
-import { CreateUserDto } from '../users/dto/create-user.dto';
-import { LoginUserDto } from '../users/dto/login-user.dto';
-import { JwtPayload } from './jwt-payload.interface';
+// import * as bcrypt from 'bcrypt';
+// import { User } from '../users/user.entity';
+import { LoginUserDto } from './dto/login-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -14,27 +12,21 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async register(createUserDto: CreateUserDto): Promise<User> {
-    return this.usersService.create(createUserDto);
-  }
-
   async login(loginUserDto: LoginUserDto): Promise<{ accessToken: string }> {
-    const user = await this.usersService.findByLogin(loginUserDto);
+    const user = await this.usersService.Login(loginUserDto);
+    if (!user) {
+      return null;
+    }
 
-    const token = this._createToken(user);
+    const payload = { username: user.username, sub: user.id };
+
+    const accessToken = this.jwtService.sign(payload);
     return {
-      accessToken: token,
+      accessToken,
     };
-  }
-
-  private _createToken({ username }: User): string {
-    const user: JwtPayload = { username };
-    return this.jwtService.sign(user);
-  }
-
-  async validateUser(payload: JwtPayload): Promise<User> {
-    return await this.usersService.findByPayload(payload);
   }
 }
 
-
+//   async validateUser(payload: JwtPayload): Promise<User> {
+//    // return await this.usersService.findByPayload(payload);
+//   }
